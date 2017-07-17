@@ -1,0 +1,30 @@
+import org.gradle.example.SleepTask
+
+task sleepOne(type: SleepTask) {
+    secondsToSleep = 1
+}
+
+task sleepFive(type: SleepTask) {
+    secondsToSleep = 5
+}
+
+task sleepTen(type: SleepTask) {
+    secondsToSleep = 10
+}
+
+task sleep {
+    description 'Demonstrates intra-project parallelism by running the three sleep tasks'
+}
+
+tasks.withType(SleepTask) { task ->
+    tasks.sleep.dependsOn task
+}
+
+
+import org.gradle.example.MultiSleepTask
+
+task multiSleep(type: MultiSleepTask) {
+    description 'Demonstrates intra-task parallelism by running three task actions in parallel'
+    sleep 1, 5, 10
+}
+
